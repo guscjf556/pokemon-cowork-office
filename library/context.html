@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>포켓몬 연구 서재 - 맥락 아카이브</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --accent: #f59e0b;
+      --text: #1e293b;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-weight: bold;
+      font-size: 1rem;
+      color: #0f172a;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .context-box {
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      padding: 12px 14px;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.88rem;
+    }
+    .file-item a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .file-item a:hover {
+      text-decoration: underline;
+    }
+    .badge-date {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>📚 포켓몬 연구 서재 & 맥락 기록고</h2>
+    <span style="font-size: 0.8rem; background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 6px; font-weight: bold;">
+      PRD F2 서재 열람
+    </span>
+  </div>
+
+  <!-- 1. 현재 서재의 맥락 기록 (_맥락.md) -->
+  <div class="card">
+    <div class="card-title">📖 최근 서재 맥락 기록 (_맥락.md)</div>
+    <div>
+      <span class="tag">상담·교육</span>
+      <span class="tag">2026 학회</span>
+      <span class="tag">비식별화 완료</span>
+    </div>
+    <div class="context-box">
+      <strong>[결정 사항 및 맥락 요약]</strong><br>
+      • <strong>발표 대상:</strong> 2026 동계 상담학회 연구자 및 현장 실무자<br>
+      • <strong>핵심 요구:</strong> 중독 최신 논문 12편 요약본과 실제 사례 비교 분석 포함<br>
+      • <strong>보안 수칙 준수:</strong> 내담자 정보는 완벽 비식별화 처리 후 오피스 폴더에 반영됨<br>
+      • <strong>다음 작업 예정:</strong> 제작자(파이리)가 발표 슬라이드 디자인 개편 진행
+    </div>
+  </div>
+
+  <!-- 2. 보관된 참고 자료 및 산출물 목록 -->
+  <div class="card">
+    <div class="card-title">📁 보관된 자료 및 결과 파일</div>
+    
+    <div class="file-item">
+      <span>📄 2026_학회_발표자료_v2.pptx</span>
+      <span class="badge-date">제작자 완료 (2시간 전)</span>
+    </div>
+    <div class="file-item">
+      <span>📑 중독_최신_논문_12편_핵심요약.pdf</span>
+      <span class="badge-date">연구원 완료 (어제)</span>
+    </div>
+    <div class="file-item">
+      <span>📝 상담_포트폴리오_케이스정리_비식별.md</span>
+      <span class="badge-date">사서 아카이빙 (3일 전)</span>
+    </div>
+    <div class="file-item">
+      <span>📊 공용_프레젠테이션_템플릿_v1.key</span>
+      <span class="badge-date">공용 자산</span>
+    </div>
+  </div>
+
+</body>
+</html>

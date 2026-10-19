@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>오피스 종합 업무 보고함</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #ef4444;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+    .badge-done { background: #dcfce7; color: #15803d; }
+    .badge-ing { background: #fef9c3; color: #a16207; }
+    .summary-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h3 style="margin: 0;">📋 오피스 업무 보고함 (PRD F4)</h3>
+    <span class="badge badge-done">최신 갱신됨</span>
+  </div>
+
+  <!-- 보고 1: 연구원(꼬부기) 논문 정리 보고 -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <strong>🔬 중독 최신 논문 12편 핵심 요약 완료</strong>
+      <span class="badge badge-done">완료 보고</span>
+    </div>
+    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">
+      보고자: 연구원 (꼬부기) | 참고: Google Scholar, 연구실 드라이브
+    </div>
+    <div class="summary-box">
+      <strong>[3줄 요약]</strong><br>
+      1. 2024~2026 주요 학술지 중 청소년 행동중독 관련 논문 12편 선별 완료.<br>
+      2. 메타인지 기반 상담 기법의 효과성이 공통적으로 입증됨.<br>
+      3. 요약 보고서 파일은 서재 아카이브에 등록 완료.
+    </div>
+  </div>
+
+  <!-- 보고 2: 제작자(파이리) 발표자료 제작 보고 -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <strong>🎨 2026 학회 발표 PPT v2 초안 완성</strong>
+      <span class="badge badge-ing">검토 대기</span>
+    </div>
+    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">
+      보고자: 제작자 (파이리) | 참고: 서재 맥락 기록(_맥락.md)
+    </div>
+    <div class="summary-box">
+      <strong>[3줄 요약]</strong><br>
+      1. 양주원 님 스타일 템플릿을 적용하여 24슬라이드 구성 완료.<br>
+      2. 연구원의 최신 논문 요약 표를 8~12페이지에 삽입.<br>
+      3. 검토 후 최종 오너 승인 시 학회 제출 파일로 확정 예정.
+    </div>
+  </div>
+
+</body>
+</html>
