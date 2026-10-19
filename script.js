@@ -122,3 +122,39 @@ WA.room.onEnterZone("library_zone", () => {
     });
 });
 
+// 5. 포켓몬 아바타 스프라이트 변경 처리
+const POKEMON_SPRITES = {
+    "pikachu": "characters/pikachu.png",
+    "charmander": "characters/charmander.png",
+    "squirtle": "characters/squirtle.png",
+    "bulbasaur": "characters/bulbasaur.png",
+    "eevee": "characters/eevee.png"
+};
+
+// iframe (대시보드)으로부터 포켓몬 변경 메시지 수신
+window.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "SET_POKEMON_AVATAR") {
+        const pokeId = event.data.pokemon;
+        const pokeName = event.data.name || pokeId;
+        const spriteUrl = POKEMON_SPRITES[pokeId];
+
+        console.log(`[Pokemon Office] Changing character to: ${pokeName} (${spriteUrl})`);
+
+        try {
+            // WorkAdventure 아바타 세부정보 변경 API 호출
+            if (typeof WA.player.setPlayerDetails === "function") {
+                WA.player.setPlayerDetails({
+                    characterLayers: [spriteUrl]
+                });
+            } else if (WA.player.state) {
+                WA.player.state.currentPokemon = pokeId;
+            }
+
+            WA.chat.sendChatMessage(`🌟 포켓몬 아바타가 [${pokeName}]로 변신했습니다!`, "오피스 시스템");
+        } catch (err) {
+            console.error("Failed to change player details:", err);
+        }
+    }
+});
+
+

@@ -277,14 +277,24 @@
         pokeItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         const selected = item.getAttribute('data-pokemon');
+        const pokeName = item.querySelector('.poke-name') ? item.querySelector('.poke-name').innerText.trim() : selected;
         localStorage.setItem("myPokemon", selected);
+
+        // 부모 창(WorkAdventure)으로 아바타 변경 메시지 전송
+        window.parent.postMessage({
+          type: "SET_POKEMON_AVATAR",
+          pokemon: selected,
+          name: pokeName
+        }, "*");
+
         if (window.parent && window.parent.WA) {
           try {
-            window.parent.WA.chat.sendChatMessage(`포켓몬 아바타가 [${item.innerText.trim()}]로 지정되었습니다!`, "시스템");
+            window.parent.WA.chat.sendChatMessage(`포켓몬 아바타가 [${pokeName}]로 지정되었습니다!`, "시스템");
           } catch(e) {}
         }
       });
     });
+
 
     // 2. 진행도 업데이트
     function updateProg(idx, val) {

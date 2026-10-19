@@ -174,5 +174,12 @@
   "tilewidth": 32,
   "type": "map",
   "version": "1.10",
-  "width": 20
+  "width": 20,
+  "properties": [
+    {
+      "name": "script",
+      "type": "string",
+      "value": "script.js"
+    }
+  ]
 }
