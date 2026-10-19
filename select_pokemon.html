@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>포켓몬 오피스 아바타 선택</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #1e1e24;
+      color: #ffffff;
+      text-align: center;
+    }
+    h2 {
+      color: #ffcb05;
+      margin-top: 0;
+      font-size: 1.4rem;
+      text-shadow: 1px 1px 2px #000;
+    }
+    p {
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .poke-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .poke-card {
+      background: #2b2b36;
+      border: 3px solid #3f3f4e;
+      border-radius: 12px;
+      padding: 16px 12px;
+      width: 100px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .poke-card:hover {
+      border-color: #ffcb05;
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(255, 203, 5, 0.3);
+    }
+    .poke-card.selected {
+      border-color: #ee1515;
+      background: #382c30;
+      box-shadow: 0 0 14px rgba(238, 21, 21, 0.6);
+    }
+    .sprite-box {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 10px auto;
+      transform: scale(1.6);
+      image-rendering: pixelated;
+    }
+    .poke-name {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .btn-confirm {
+      margin-top: 24px;
+      background: #ee1515;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(238, 21, 21, 0.4);
+      transition: background 0.2s;
+    }
+    .btn-confirm:hover {
+      background: #cc1010;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎮 포켓몬 코워크 오피스</h2>
+  <p>입장할 포켓몬 아바타를 선택해 주세요 (인간 캐릭터 대체)</p>
+
+  <div class="poke-container">
+    <div class="poke-card selected" data-id="pikachu" data-name="피카츄">
+      <div class="sprite-box" style="background: url('characters/pikachu.png') 0 0;"></div>
+      <div class="poke-name">피카츄</div>
+    </div>
+    <div class="poke-card" data-id="charmander" data-name="파이리">
+      <div class="sprite-box" style="background: url('characters/charmander.png') 0 0;"></div>
+      <div class="poke-name">파이리</div>
+    </div>
+    <div class="poke-card" data-id="squirtle" data-name="꼬부기">
+      <div class="sprite-box" style="background: url('characters/squirtle.png') 0 0;"></div>
+      <div class="poke-name">꼬부기</div>
+    </div>
+    <div class="poke-card" data-id="bulbasaur" data-name="이상해씨">
+      <div class="sprite-box" style="background: url('characters/bulbasaur.png') 0 0;"></div>
+      <div class="poke-name">이상해씨</div>
+    </div>
+    <div class="poke-card" data-id="eevee" data-name="이브이">
+      <div class="sprite-box" style="background: url('characters/eevee.png') 0 0;"></div>
+      <div class="poke-name">이브이</div>
+    </div>
+  </div>
+
+  <button class="btn-confirm" id="confirmBtn">오피스 입장하기 ⚡</button>
+
+  <script>
+    let currentPoke = "pikachu";
+    let currentName = "피카츄";
+
+    const cards = document.querySelectorAll('.poke-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        currentPoke = card.getAttribute('data-id');
+        currentName = card.getAttribute('data-name');
+      });
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+      localStorage.setItem("myPokemon", currentPoke);
+
+      // WorkAdventure 부모창으로 포켓몬 교체 메시지 발송
+      window.parent.postMessage({
+        type: "SET_POKEMON_AVATAR",
+        pokemon: currentPoke,
+        name: currentName,
+        closeModal: true
+      }, "*");
+
+      // 모달 닫기
+      if (window.parent && window.parent.WA && window.parent.WA.nav) {
+        try {
+          window.parent.WA.nav.closeCoWebSite();
+        } catch(e) {}
+      }
+    });
+  </script>
+</body>
+</html>

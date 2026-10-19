@@ -1,10 +1,82 @@
 /// <reference path="./WA.d.ts" />
 
 // WorkAdventure Scripting API - Pokemon Cowork Office
-
 console.log("[Pokemon Cowork Office] Scripting API loaded!");
 
-// 5인 멤버별 기본 프로필 및 구글 드라이브 정보
+const POKEMON_SPRITES = {
+    "pikachu": "characters/pikachu.png",
+    "charmander": "characters/charmander.png",
+    "squirtle": "characters/squirtle.png",
+    "bulbasaur": "characters/bulbasaur.png",
+    "eevee": "characters/eevee.png"
+};
+
+// 포켓몬 스프라이트 강제 교체 함수 (기존 인간 스프라이트 완전 제거)
+function applyPokemonAvatar(pokemonId, pokemonName) {
+    const spritePath = POKEMON_SPRITES[pokemonId] || POKEMON_SPRITES["pikachu"];
+    const absoluteSpriteUrl = new URL(spritePath, window.location.href).href;
+
+    console.log(`[Pokemon Office] Applying Pokemon: ${pokemonName || pokemonId} -> ${absoluteSpriteUrl}`);
+
+    try {
+        if (WA.player && typeof WA.player.setPlayerDetails === "function") {
+            // WorkAdventure의 모든 인간 캐릭터 파츠 레이어를 제거하고 단일 포켓몬 스프라이트로 덮어쓰기
+            WA.player.setPlayerDetails({
+                characterLayers: [absoluteSpriteUrl]
+            });
+        }
+        WA.chat.sendChatMessage(`⚡ [${pokemonName || pokemonId}] 아바타가 적용되었습니다!`, "포켓몬 오피스");
+    } catch (err) {
+        console.warn("setPlayerDetails failed:", err);
+    }
+}
+
+// 1. 초기 입장 시 처리 (WA 초기화 완료 시)
+WA.onInit().then(() => {
+    // 저장된 포켓몬이 없으면 선택 모달 띄우기
+    const saved = localStorage.getItem("myPokemon");
+    if (!saved) {
+        // 첫 접속 시 포켓몬 선택 팝업 오픈
+        WA.nav.openCoWebSite("select_pokemon.html");
+    } else {
+        applyPokemonAvatar(saved);
+    }
+}).catch((e) => {
+    console.warn("onInit hook error:", e);
+});
+
+// 2. 상단 메뉴 등록
+try {
+    WA.ui.registerMenuEntry("🐾 포켓몬 아바타 변경", () => {
+        WA.nav.openCoWebSite("select_pokemon.html");
+    });
+    WA.ui.registerMenuEntry("⚡ 내 업무 대시보드", () => {
+        WA.nav.openCoWebSite("dashboard/index.html");
+    });
+    WA.ui.registerMenuEntry("📋 오피스 업무 보고함", () => {
+        WA.nav.openCoWebSite("report/index.html");
+    });
+} catch (e) {
+    console.warn("registerMenuEntry error:", e);
+}
+
+// 3. iframe 메시지 수신 (포켓몬 선택 시 아바타 교체)
+window.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "SET_POKEMON_AVATAR") {
+        const pokeId = event.data.pokemon;
+        const pokeName = event.data.name || pokeId;
+        localStorage.setItem("myPokemon", pokeId);
+        applyPokemonAvatar(pokeId, pokeName);
+
+        if (event.data.closeModal) {
+            try {
+                WA.nav.closeCoWebSite();
+            } catch(e) {}
+        }
+    }
+});
+
+// 4. 5인 멤버별 기본 프로필 및 구글 드라이브 정보
 const OFFICE_MEMBERS = [
     {
         id: "desk_1",
@@ -12,7 +84,7 @@ const OFFICE_MEMBERS = [
         role: "비서 / 총괄",
         name: "멤버 1",
         task: "메일/일정 확인 및 전체 업무 조율 중",
-        driveUrl: "https://drive.google.com" // 실제 팀원 구글 드라이브 폴더 링크로 교체 가능
+        driveUrl: "https://drive.google.com"
     },
     {
         id: "desk_2",
@@ -48,24 +120,11 @@ const OFFICE_MEMBERS = [
     }
 ];
 
-// 1. 상단 메뉴에 '내 업무 대시보드' 및 '오피스 보고함' 등록
-try {
-    WA.ui.registerMenuEntry("⚡ 내 업무 대시보드", () => {
-        WA.nav.openCoWebSite("dashboard/index.html");
-    });
-    WA.ui.registerMenuEntry("📋 오피스 업무 보고함", () => {
-        WA.nav.openCoWebSite("report/index.html");
-    });
-} catch (e) {
-    console.warn("registerMenuEntry error:", e);
-}
-
-// 2. 5개 데스크 상호작용 등록 (상대방 상태 확인 및 공유 구글 드라이브 열기)
+// 5. 5개 데스크 상호작용 등록
 OFFICE_MEMBERS.forEach((member) => {
     let currentPopup = null;
 
     WA.room.onEnterZone(member.id, () => {
-        // 머리 위 팝업: 상대방의 현재 진행 업무 표시
         currentPopup = WA.ui.openPopup(
             member.id,
             `[${member.pokemon}] ${member.name} (${member.role})\n현재 작업: "${member.task}"`,
@@ -87,7 +146,6 @@ OFFICE_MEMBERS.forEach((member) => {
             ]
         );
 
-        // 하단 액션 메시지 안내
         WA.ui.displayActionMessage({
             message: `[Space 키] ${member.name}(${member.pokemon})의 공유 드라이브 열기`,
             callback: () => {
@@ -104,7 +162,7 @@ OFFICE_MEMBERS.forEach((member) => {
     });
 });
 
-// 3. 중앙 회의존 (음성 대화 집중 구역)
+// 6. 중앙 회의존 안내
 WA.room.onEnterZone("meeting_zone", () => {
     WA.chat.sendChatMessage(
         "🎙️ 중앙 브리핑룸에 입장했습니다. 5인 마이크 음성 대화가 활성화됩니다.",
@@ -112,7 +170,7 @@ WA.room.onEnterZone("meeting_zone", () => {
     );
 });
 
-// 4. 연구 서재 (자료실 & _맥락.md)
+// 7. 연구 서재 안내
 WA.room.onEnterZone("library_zone", () => {
     WA.ui.displayActionMessage({
         message: "[Space 키] 포켓몬 연구 서재 및 맥락 기록(_맥락.md) 열람",
@@ -121,40 +179,3 @@ WA.room.onEnterZone("library_zone", () => {
         }
     });
 });
-
-// 5. 포켓몬 아바타 스프라이트 변경 처리
-const POKEMON_SPRITES = {
-    "pikachu": "characters/pikachu.png",
-    "charmander": "characters/charmander.png",
-    "squirtle": "characters/squirtle.png",
-    "bulbasaur": "characters/bulbasaur.png",
-    "eevee": "characters/eevee.png"
-};
-
-// iframe (대시보드)으로부터 포켓몬 변경 메시지 수신
-window.addEventListener("message", (event) => {
-    if (event.data && event.data.type === "SET_POKEMON_AVATAR") {
-        const pokeId = event.data.pokemon;
-        const pokeName = event.data.name || pokeId;
-        const spriteUrl = POKEMON_SPRITES[pokeId];
-
-        console.log(`[Pokemon Office] Changing character to: ${pokeName} (${spriteUrl})`);
-
-        try {
-            // WorkAdventure 아바타 세부정보 변경 API 호출
-            if (typeof WA.player.setPlayerDetails === "function") {
-                WA.player.setPlayerDetails({
-                    characterLayers: [spriteUrl]
-                });
-            } else if (WA.player.state) {
-                WA.player.state.currentPokemon = pokeId;
-            }
-
-            WA.chat.sendChatMessage(`🌟 포켓몬 아바타가 [${pokeName}]로 변신했습니다!`, "오피스 시스템");
-        } catch (err) {
-            console.error("Failed to change player details:", err);
-        }
-    }
-});
-
-
