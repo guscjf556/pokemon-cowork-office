@@ -2,19 +2,18 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>포켓몬 코워크 오피스 - 개인 대시보드</title>
+  <title>코워크 오피스 - 개인 업무 대시보드</title>
   <style>
     :root {
-      --bg-color: #f7f9fa;
+      --bg-color: #f8fafc;
       --card-bg: #ffffff;
-      --primary: #ee1515;
-      --secondary: #222224;
-      --accent: #ffcb05;
-      --border: #e1e8ed;
-      --text: #2c3e50;
+      --primary: #2563eb;
+      --secondary: #1e293b;
+      --border: #e2e8f0;
+      --text: #334155;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 16px;
       background-color: var(--bg-color);
@@ -24,7 +23,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2px solid var(--accent);
+      border-bottom: 2px solid var(--primary);
       padding-bottom: 10px;
       margin-bottom: 16px;
     }
@@ -37,8 +36,9 @@
       gap: 6px;
     }
     .badge {
-      background: var(--accent);
-      color: #333;
+      background: #eff6ff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
       padding: 3px 8px;
       border-radius: 12px;
       font-size: 0.75rem;
@@ -50,11 +50,12 @@
       border-radius: 8px;
       padding: 14px;
       margin-bottom: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
     .card-title {
       font-weight: bold;
       font-size: 0.92rem;
+      color: var(--secondary);
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
@@ -62,60 +63,25 @@
     }
     select, input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 8px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
       box-sizing: border-box;
       font-size: 0.85rem;
-    }
-    /* 캐릭터 선택 그리드 */
-    .poke-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .poke-item {
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 2px;
-      text-align: center;
-      cursor: pointer;
-      background: #fafafa;
-      transition: all 0.2s;
-    }
-    .poke-item:hover {
-      border-color: var(--primary);
-    }
-    .poke-item.active {
-      border-color: var(--primary);
-      background: #fff0f0;
-      box-shadow: 0 0 6px rgba(238,21,21,0.3);
-    }
-    .poke-sprite {
-      width: 32px;
-      height: 32px;
-      margin: 0 auto;
-      background-repeat: no-repeat;
-      background-position: 0 0;
-    }
-    .poke-name {
-      font-size: 0.72rem;
-      margin-top: 4px;
-      font-weight: 600;
+      color: var(--secondary);
     }
     /* 프로젝트 진행도 */
     .project-item {
       margin-bottom: 12px;
       background: #fdfdfd;
-      padding: 8px;
-      border: 1px solid #f0f0f0;
+      padding: 10px;
+      border: 1px solid #f1f5f9;
       border-radius: 6px;
     }
     .project-label {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       margin-bottom: 6px;
       font-weight: 500;
     }
@@ -136,7 +102,7 @@
       margin: 0;
     }
     .ref-list li {
-      padding: 6px 0;
+      padding: 7px 0;
       border-bottom: 1px dashed var(--border);
       font-size: 0.82rem;
       display: flex;
@@ -144,8 +110,9 @@
       align-items: center;
     }
     .ref-list a {
-      color: #0366d6;
+      color: var(--primary);
       text-decoration: none;
+      font-weight: 500;
     }
     .ref-list a:hover {
       text-decoration: underline;
@@ -154,80 +121,53 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 4px 8px;
+      padding: 5px 10px;
       border-radius: 4px;
       font-size: 0.75rem;
       cursor: pointer;
     }
     .btn-sm:hover {
-      opacity: 0.9;
+      background: #1d4ed8;
     }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h2>⚡ 포켓몬 오피스 대시보드</h2>
-    <span class="badge" id="mySlotBadge">내 데스크: 1번</span>
+    <h2>💼 내 업무 대시보드</h2>
+    <span class="badge">5인 코워크 오피스</span>
   </div>
 
-  <!-- 1. 포켓몬 아바타 지정 -->
+  <!-- 1. 실시간 상태 & 구글 드라이브 설정 -->
   <div class="card">
-    <div class="card-title">내 포켓몬 아바타 지정</div>
-    <div class="poke-grid" id="pokeGrid">
-      <div class="poke-item active" data-pokemon="pikachu">
-        <div class="poke-sprite" style="background-image: url('../characters/pikachu.png');"></div>
-        <div class="poke-name">피카츄</div>
-      </div>
-      <div class="poke-item" data-pokemon="charmander">
-        <div class="poke-sprite" style="background-image: url('../characters/charmander.png');"></div>
-        <div class="poke-name">파이리</div>
-      </div>
-      <div class="poke-item" data-pokemon="squirtle">
-        <div class="poke-sprite" style="background-image: url('../characters/squirtle.png');"></div>
-        <div class="poke-name">꼬부기</div>
-      </div>
-      <div class="poke-item" data-pokemon="bulbasaur">
-        <div class="poke-sprite" style="background-image: url('../characters/bulbasaur.png');"></div>
-        <div class="poke-name">이상해씨</div>
-      </div>
-      <div class="poke-item" data-pokemon="eevee">
-        <div class="poke-sprite" style="background-image: url('../characters/eevee.png');"></div>
-        <div class="poke-name">이브이</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. 실시간 상태 & 구글 드라이브 폴더 설정 -->
-  <div class="card">
-    <div class="card-title">현재 작업 상태 & 내 구글 드라이브</div>
+    <div class="card-title">현재 작업 상태 & 공유 드라이브</div>
     
-    <label style="font-size: 0.8rem; font-weight: 600;">작업 상태 선택:</label>
+    <label style="font-size: 0.8rem; font-weight: 600;">현재 내 상태 (상대방에게 표시):</label>
     <select id="statusSelect" style="margin-bottom: 10px;">
-      <option value="⚡ 연구/집중 모드 (방해 금지)">⚡ 연구/집중 모드 (방해 금지)</option>
-      <option value="✍️ 포트폴리오/문서 작성 중">✍️ 포트폴리오/문서 작성 중</option>
-      <option value="🔍 최신 자료/논문 정리 중">🔍 최신 자료/논문 정리 중</option>
+      <option value="🔥 집중 업무 중 (방해 금지)">🔥 집중 업무 중 (방해 금지)</option>
+      <option value="✍️ 기획서 / 보고서 작성 중">✍️ 기획서 / 보고서 작성 중</option>
+      <option value="🔍 최신 학술 논문 및 자료 분석 중">🔍 최신 학술 논문 및 자료 분석 중</option>
       <option value="💬 대화 / 미팅 가능">💬 대화 / 미팅 가능</option>
-      <option value="☕ 포켓몬 센터 휴식 중">☕ 포켓몬 센터 휴식 중</option>
+      <option value="☕ 휴식 및 자리 비움">☕ 휴식 및 자리 비움</option>
     </select>
 
-    <label style="font-size: 0.8rem; font-weight: 600;">내 공유 구글 드라이브 폴더 URL:</label>
+    <label style="font-size: 0.8rem; font-weight: 600;">내 공유 구글 드라이브 URL:</label>
     <div style="display: flex; gap: 6px; margin-top: 4px;">
       <input type="text" id="driveUrlInput" placeholder="https://drive.google.com/drive/folders/..." value="https://drive.google.com">
       <button class="btn-sm" id="saveDriveBtn">저장</button>
     </div>
   </div>
 
-  <!-- 3. 프로젝트별 진행상황 (실시간 조절 슬라이더) -->
+  <!-- 2. 프로젝트별 진행상황 (슬라이더 조절) -->
   <div class="card">
     <div class="card-title">
       <span>프로젝트별 진행 현황</span>
-      <span style="font-size: 0.75rem; color: #666;">(슬라이더로 조절)</span>
+      <span style="font-size: 0.75rem; color: #64748b;">(슬라이더로 조절)</span>
     </div>
     
     <div class="project-item">
       <div class="project-label">
-        <span>상담 포트폴리오 개편 (방1)</span>
+        <span>상담 포트폴리오 개편 프로젝트</span>
         <span id="progVal1">75%</span>
       </div>
       <div class="slider-wrap">
@@ -237,7 +177,7 @@
 
     <div class="project-item">
       <div class="project-label">
-        <span>2026 학회 발표자료 업데이트</span>
+        <span>2026 학회 발표자료(PPT) 제작</span>
         <span id="progVal2">40%</span>
       </div>
       <div class="slider-wrap">
@@ -247,7 +187,7 @@
 
     <div class="project-item">
       <div class="project-label">
-        <span>중독 최신 논문 아카이빙 (서재)</span>
+        <span>행동중독 관련 최신 논문 12편 아카이빙</span>
         <span id="progVal3">90%</span>
       </div>
       <div class="slider-wrap">
@@ -256,45 +196,29 @@
     </div>
   </div>
 
-  <!-- 4. 참고 자료 북마크 -->
+  <!-- 3. 참고 자료 & 빠른 링크 -->
   <div class="card">
     <div class="card-title">
-      <span>📌 내 참고 자료 & 서재 링크</span>
+      <span>📌 참고 자료 & 아카이브 바로가기</span>
       <button class="btn-sm" onclick="addRefPrompt()">+ 추가</button>
     </div>
     <ul class="ref-list" id="refList">
-      <li>📁 <a href="https://drive.google.com" target="_blank" id="openMyDriveLink">내 공유 구글 드라이브 바로가기</a> <span>링크</span></li>
-      <li>📄 <a href="#" onclick="alert('서재 맥락 기록 (_맥락.md) 뷰어'); return false;">서재 맥락 기록 (_맥락.md)</a> <span>문서</span></li>
-      <li>📊 <a href="#" onclick="alert('공용 PPT 템플릿'); return false;">공용 발표자료 템플릿</a> <span>양식</span></li>
+      <li>📁 <a href="https://drive.google.com" target="_blank" id="openMyDriveLink">내 공유 구글 드라이브 바로가기</a> <span style="font-size: 0.75rem; color: #94a3b8;">드라이브</span></li>
+      <li>📄 <a href="#" onclick="alert('서재 맥락 기록 (_맥락.md) 뷰어'); return false;">오피스 맥락 기록 (_맥락.md)</a> <span style="font-size: 0.75rem; color: #94a3b8;">아카이브</span></li>
+      <li>📊 <a href="#" onclick="alert('공용 PPT 템플릿'); return false;">공용 발표자료 PPT 템플릿</a> <span style="font-size: 0.75rem; color: #94a3b8;">서식</span></li>
     </ul>
   </div>
 
   <script>
-    // 1. 포켓몬 선택
-    const pokeItems = document.querySelectorAll('.poke-item');
-    pokeItems.forEach(item => {
-      item.addEventListener('click', () => {
-        pokeItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        const selected = item.getAttribute('data-pokemon');
-        const pokeName = item.querySelector('.poke-name') ? item.querySelector('.poke-name').innerText.trim() : selected;
-        localStorage.setItem("myPokemon", selected);
-
-        // 부모 창(WorkAdventure)으로 아바타 변경 메시지 전송
-        window.parent.postMessage({
-          type: "SET_POKEMON_AVATAR",
-          pokemon: selected,
-          name: pokeName
-        }, "*");
-
-        if (window.parent && window.parent.WA) {
-          try {
-            window.parent.WA.chat.sendChatMessage(`포켓몬 아바타가 [${pokeName}]로 지정되었습니다!`, "시스템");
-          } catch(e) {}
-        }
-      });
+    // 1. 상태 변경 시 WorkAdventure 채팅창에 알림
+    document.getElementById('statusSelect').addEventListener('change', (e) => {
+      localStorage.setItem("myStatus", e.target.value);
+      if (window.parent && window.parent.WA) {
+        try {
+          window.parent.WA.chat.sendChatMessage("내 업무 상태 변경: " + e.target.value, "상태 알림");
+        } catch(err) {}
+      }
     });
-
 
     // 2. 진행도 업데이트
     function updateProg(idx, val) {
@@ -318,25 +242,20 @@
       if (!url) return;
       
       const li = document.createElement('li');
-      li.innerHTML = `🔗 <a href="${url}" target="_blank">${title}</a> <span>추가됨</span>`;
+      li.innerHTML = `🔗 <a href="${url}" target="_blank">${title}</a> <span style="font-size: 0.75rem; color: #94a3b8;">링크</span>`;
       document.getElementById('refList').appendChild(li);
     }
 
     // 초기화: 저장된 데이터 불러오기
     window.addEventListener('DOMContentLoaded', () => {
-      const savedPoke = localStorage.getItem('myPokemon');
-      if (savedPoke) {
-        pokeItems.forEach(i => {
-          if (i.getAttribute('data-pokemon') === savedPoke) {
-            pokeItems.forEach(x => x.classList.remove('active'));
-            i.classList.add('active');
-          }
-        });
-      }
       const savedDrive = localStorage.getItem('myDriveUrl');
       if (savedDrive) {
         document.getElementById('driveUrlInput').value = savedDrive;
         document.getElementById('openMyDriveLink').href = savedDrive;
+      }
+      const savedStatus = localStorage.getItem('myStatus');
+      if (savedStatus) {
+        document.getElementById('statusSelect').value = savedStatus;
       }
       [1, 2, 3].forEach(idx => {
         const p = localStorage.getItem('projectProg_' + idx);
